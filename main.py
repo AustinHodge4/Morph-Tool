@@ -65,14 +65,14 @@ def load_images(image_directory):
     for file in os.listdir(image_directory):
         loaded_images.append(load_image(os.path.join(image_directory, file)))
 
-    return load_images
+    return loaded_images
     
 # Load the two images to morph
 loaded_images = load_images('formatted-images')
 
 # Number of images in between the two provided images
 steps = 2
-images = [loaded_images[0], loaded_images[1]]
+images = [image for image in loaded_images]
 # Create list space to hold the generated in between images
 for x in range(steps):
     images.insert(x+1, None)
