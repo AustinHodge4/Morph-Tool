@@ -79,6 +79,6 @@ for x in range(steps):
 
 #print(blend_image(images[0], images[steps+1], [10, None, None, 10], right=steps+1))
 # Morph the images
-morphed_images = blend_image(images[0], images[steps+1], images, right=steps+1))
+morphed_images = blend_image(images[0], images[steps+1], images, right=steps+1)
 
 # TODO: Save images as ppm files
