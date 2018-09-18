@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
+from threading import Thread
 
 class Application():
     def __init__(self):
@@ -49,13 +50,25 @@ class Application():
                 print('The number of steps are invalid!')
                 return
 
-            # Start morphing
-            print("Morphing")
+            # Start morphing process
             from formatPPM import format_images
-            format_images(first_image_entry.get(), second_image_entry.get())
+            # Create seperate threads to allow ui to not freeze
+            formatThread = Thread(target = format_images, args = (first_image_entry.get(), second_image_entry.get()))
+            #format_images(first_image_entry.get(), second_image_entry.get())
             from morph import morph_images
-            morph_images(number_of_steps-2)
-            messagebox.showinfo(title="Complete", message='Images exported to morph-images in current directory')
+            morphThread = Thread(target = morph_images, args = (number_of_steps-2,))
+            #morph_images(number_of_steps-2)
+            # Start the formatting thread and show popup saying process
+            formatThread.start()
+            messagebox.showinfo(title="Formatting Images", message='Images are being formatted and exported to formatted-images in current directory')
+            # Wait until format thread is done
+            formatThread.join()
+            # Start the morphing thread and show popup saying process
+            morphThread.start()
+            messagebox.showinfo(title="Morphing Images", message='Images are being morphed and generated')
+            # Wait until morph thread is done
+            morphThread.join()
+            messagebox.showinfo(title="Complete", message='Images exported to morphed-images in current directory')
 
         # Set title, screen size, disable resizable window
         self.window.title('PPM Morph-Tool')
@@ -63,7 +76,7 @@ class Application():
         self.window.resizable(0, 0)
 
         # First image label and input field
-        first_image_label = Label(self.window, text="First Image", font='Helvetica 12 bold', anchor='w')
+        first_image_label = Label(self.window, text="Start Image", font='Helvetica 12 bold', anchor='w')
         first_image_label.place(x = 20, y = 30, width=120, height=25)
         # Input field
         first_image_entry = Entry(self.window)
@@ -73,7 +86,7 @@ class Application():
         first_image_entry.place(x=20, y=60, width=350, height=32)
 
         # First image label and input field
-        second_image_label = Label(self.window, text="Second Image", font='Helvetica 12 bold', anchor='w')
+        second_image_label = Label(self.window, text="End Image", font='Helvetica 12 bold', anchor='w')
         second_image_label.place(x = 400, y = 30, width=120, height=25)
         # Input field
         second_image_entry = Entry(self.window)

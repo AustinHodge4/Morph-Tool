@@ -56,7 +56,7 @@ def format_images(first_image_path, second_image_path, formatted_directory='form
     formated_image = read_file(second_image_path)
     # Write to formatted directory
     write_file(os.path.join(formatted_directory, os.path.basename(second_image_path)), formated_image)
-
+    print("Done Formatting")
 def save_images(images, meta_data, directory='morphed-images'):
     ''' This will save the generated images to a directory'''
 

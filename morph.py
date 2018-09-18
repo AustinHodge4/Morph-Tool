@@ -118,3 +118,4 @@ def morph_images(steps=2):
     print("Done Morphing")
     # Save images as ppm files
     save_images(morphed_images, meta_data)
+    print("Done Saving")
